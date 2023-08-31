@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/testblock",
+  "version": "0.1.0",
+  "title": "Testblock",
+  "category": "common",
+  "description": "Our First block",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "text": {
+      "type": "string",
+      "default": "Hello world"
+    }
+  },
+  "textdomain": "testblock",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js"
+}
