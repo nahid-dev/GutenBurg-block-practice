@@ -11,7 +11,11 @@ import { __ } from "@wordpress/i18n";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
+import {
+	InspectorControls,
+	RichText,
+	useBlockProps,
+} from "@wordpress/block-editor";
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -22,7 +26,6 @@ import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
 import "./editor.scss";
 import { Fragment } from "@wordpress/element";
 import { PanelBody } from "@wordpress/components";
-import { TextControl } from "@wordpress/components";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -33,21 +36,24 @@ import { TextControl } from "@wordpress/components";
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-	const { text } = attributes;
-	console.log(text);
+	const { content } = attributes;
 	return (
 		<Fragment>
 			<InspectorControls>
 				<PanelBody title={__("Panel Title", "TestBlock")} initialOpen={true}>
-					<TextControl
-						label={__("block content label", "TestBlock")}
-						value={text}
-						onChange={(v) => setAttributes({ text: v })}
-					></TextControl>
+					Hello block
 				</PanelBody>
 			</InspectorControls>
-			<div className="block-info">
-				<h2>{text}</h2>
+			<div
+				{...useBlockProps({
+					className: "block_info_custom_class",
+				})}
+			>
+				<RichText
+					tagName="h3"
+					value={content}
+					onChange={(value) => setAttributes({ content: value })}
+				></RichText>
 			</div>
 		</Fragment>
 	);

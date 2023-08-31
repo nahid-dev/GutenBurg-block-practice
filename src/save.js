@@ -4,7 +4,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import { useBlockProps } from "@wordpress/block-editor";
+import { RichText, useBlockProps } from "@wordpress/block-editor";
 
 /**
  * The save function defines the way in which the different attributes should
@@ -16,10 +16,14 @@ import { useBlockProps } from "@wordpress/block-editor";
  * @return {WPElement} Element to render.
  */
 export default function save({ attributes }) {
-	const { text } = attributes;
+	const { content } = attributes;
 	return (
-		<>
-			<h2>{text}</h2>
-		</>
+		<div
+			{...useBlockProps.save({
+				className: "block_info_custom_class",
+			})}
+		>
+			<RichText.Content tagName="h3" value={content}></RichText.Content>
+		</div>
 	);
 }
