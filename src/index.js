@@ -20,6 +20,7 @@ import "./style.scss";
 import Edit from "./edit";
 import save from "./save";
 import metadata from "./block.json";
+import attributes from "./attributes";
 
 /**
  * Every block starts by registering a new block type definition.
@@ -32,6 +33,7 @@ registerBlockType(metadata.name, {
 		foreground: "#fff",
 		background: "#000",
 	},
+	attributes,
 
 	/**
 	 * @see ./edit.js

@@ -11,11 +11,6 @@ import { __ } from "@wordpress/i18n";
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import {
-	InspectorControls,
-	RichText,
-	useBlockProps,
-} from "@wordpress/block-editor";
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -25,7 +20,13 @@ import {
  */
 import "./editor.scss";
 import { Fragment } from "@wordpress/element";
+import {
+	InspectorControls,
+	RichText,
+	useBlockProps,
+} from "@wordpress/block-editor";
 import { PanelBody } from "@wordpress/components";
+import { SelectControl } from "@wordpress/components";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -35,24 +36,44 @@ import { PanelBody } from "@wordpress/components";
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit({ attributes, setAttributes }) {
-	const { content } = attributes;
+export default function Edit({ attributes = {}, setAttributes }) {
+	const { content, tag } = attributes;
 	return (
 		<Fragment>
 			<InspectorControls>
-				<PanelBody title={__("Panel Title", "TestBlock")} initialOpen={true}>
-					Hello block
+				<PanelBody title={__("panel Title", "TestBlock")} initialOpen={true}>
+					<SelectControl
+						label={__("Select Tag", "Test Block")}
+						value={tag}
+						options={[
+							{ label: __("H1", "Test Block"), value: "h1" },
+							{ label: __("H2", "Test Block"), value: "h2" },
+							{ label: __("H3", "Test Block"), value: "h3" },
+							{ label: __("H4", "Test Block"), value: "h4" },
+							{ label: __("H5", "Test Block"), value: "h5" },
+							{ label: __("H6", "Test Block"), value: "h6" },
+							{ label: __("p", "Test Block"), value: "p" },
+						]}
+						onChange={(value) =>
+							setAttributes({
+								tag: value,
+							})
+						}
+					></SelectControl>
 				</PanelBody>
 			</InspectorControls>
+
 			<div
 				{...useBlockProps({
 					className: "block_info_custom_class",
 				})}
 			>
 				<RichText
-					tagName="h3"
+					tagName={tag}
 					value={content}
 					onChange={(value) => setAttributes({ content: value })}
+					allowedFormats={["core/bold", "core/italic"]}
+					placeholder={__("Add list item...", "testblock")}
 				></RichText>
 			</div>
 		</Fragment>
