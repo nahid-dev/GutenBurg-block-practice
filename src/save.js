@@ -18,7 +18,7 @@ import { RichText, useBlockProps } from "@wordpress/block-editor";
  */
 export default function save({ attributes }) {
 	// console.log(attributes);
-	const { content, tag } = attributes;
+	const { content, tag, contentColor } = attributes;
 	// console.log(content);
 	return (
 		<div
@@ -26,7 +26,13 @@ export default function save({ attributes }) {
 				className: "block_info_custom_class",
 			})}
 		>
-			<RichText.Content tagName={tag} value={content}></RichText.Content>
+			<RichText.Content
+				tagName={tag}
+				value={content}
+				style={{
+					color: contentColor,
+				}}
+			></RichText.Content>
 		</div>
 	);
 }

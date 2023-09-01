@@ -22,11 +22,14 @@ import "./editor.scss";
 import { Fragment } from "@wordpress/element";
 import {
 	InspectorControls,
+	PanelColorSettings,
 	RichText,
 	useBlockProps,
 } from "@wordpress/block-editor";
 import { PanelBody } from "@wordpress/components";
 import { SelectControl } from "@wordpress/components";
+// import { ColorPalette } from "@wordpress/components";
+// import { ColorPicker } from "@wordpress/components";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -37,7 +40,8 @@ import { SelectControl } from "@wordpress/components";
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes = {}, setAttributes }) {
-	const { content, tag } = attributes;
+	const { content, tag, contentColor, backgroundColor } = attributes;
+	console.log(contentColor);
 	return (
 		<Fragment>
 			<InspectorControls>
@@ -60,7 +64,55 @@ export default function Edit({ attributes = {}, setAttributes }) {
 							})
 						}
 					></SelectControl>
+					{/* <p className="my-custom-color">{__("content-color", "text block")}</p> */}
+					{/* <ColorPalette
+						colors={[
+							{ name: "red", color: "#f00" },
+							{ name: "white", color: "#fff" },
+							{ name: "black", color: "#000" },
+						]}
+						value={contentColor}
+						onChange={(color) =>
+							setAttributes({
+								contentColor: color,
+							})
+						}
+						clearable={true}
+					></ColorPalette> */}
+					{/* <ColorPicker
+						color={contentColor}
+						onChangeComplete={(value) =>
+							setAttributes({
+								contentColor: value.hex,
+							})
+						}
+						enableAlpha={true}
+					></ColorPicker> */}
 				</PanelBody>
+				<PanelColorSettings
+					title={__("Color Settings", "Test Block")}
+					initialOpen={false}
+					colorSettings={[
+						{
+							value: contentColor,
+							onChange: (value) => {
+								setAttributes({
+									contentColor: value,
+								});
+							},
+							label: __("contentColor", "Test Block"),
+						},
+						{
+							value: backgroundColor,
+							onChange: (value) => {
+								setAttributes({
+									backgroundColor: value,
+								});
+							},
+							label: __("Content Background", "Test Block"),
+						},
+					]}
+				></PanelColorSettings>
 			</InspectorControls>
 
 			<div
@@ -74,6 +126,9 @@ export default function Edit({ attributes = {}, setAttributes }) {
 					onChange={(value) => setAttributes({ content: value })}
 					allowedFormats={["core/bold", "core/italic"]}
 					placeholder={__("Add list item...", "testblock")}
+					style={{
+						color: contentColor,
+					}}
 				></RichText>
 			</div>
 		</Fragment>

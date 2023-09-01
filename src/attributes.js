@@ -16,6 +16,12 @@ const attributes = {
 		type: "string",
 		default: "h2",
 	},
+	contentColor: {
+		type: "string",
+	},
+	backgroundColor: {
+		type: "string",
+	},
 };
 
 export default attributes;

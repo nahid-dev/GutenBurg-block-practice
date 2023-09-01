@@ -26,6 +26,12 @@ const attributes = {
   tag: {
     type: "string",
     default: "h2"
+  },
+  contentColor: {
+    type: "string"
+  },
+  backgroundColor: {
+    type: "string"
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (attributes);
@@ -77,6 +83,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// import { ColorPalette } from "@wordpress/components";
+// import { ColorPicker } from "@wordpress/components";
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -92,8 +100,11 @@ function Edit({
 }) {
   const {
     content,
-    tag
+    tag,
+    contentColor,
+    backgroundColor
   } = attributes;
+  console.log(contentColor);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("panel Title", "TestBlock"),
     initialOpen: true
@@ -125,7 +136,27 @@ function Edit({
     onChange: value => setAttributes({
       tag: value
     })
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.PanelColorSettings, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Color Settings", "Test Block"),
+    initialOpen: false,
+    colorSettings: [{
+      value: contentColor,
+      onChange: value => {
+        setAttributes({
+          contentColor: value
+        });
+      },
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("contentColor", "Test Block")
+    }, {
+      value: backgroundColor,
+      onChange: value => {
+        setAttributes({
+          backgroundColor: value
+        });
+      },
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Content Background", "Test Block")
+    }]
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({
       className: "block_info_custom_class"
     })
@@ -136,7 +167,10 @@ function Edit({
       content: value
     }),
     allowedFormats: ["core/bold", "core/italic"],
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Add list item...", "testblock")
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Add list item...", "testblock"),
+    style: {
+      color: contentColor
+    }
   })));
 }
 
@@ -243,7 +277,8 @@ function save({
   // console.log(attributes);
   const {
     content,
-    tag
+    tag,
+    contentColor
   } = attributes;
   // console.log(content);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -252,7 +287,10 @@ function save({
     })
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText.Content, {
     tagName: tag,
-    value: content
+    value: content,
+    style: {
+      color: contentColor
+    }
   }));
 }
 
