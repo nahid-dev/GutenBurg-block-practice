@@ -32,6 +32,22 @@ const attributes = {
   },
   backgroundColor: {
     type: "string"
+  },
+  padding: {
+    type: "object",
+    default: {
+      top: "10px",
+      bottom: "10px",
+      left: "10px",
+      right: "10px"
+    }
+  },
+  margin: {
+    type: "object",
+    default: {
+      top: "10px",
+      bottom: "10px"
+    }
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (attributes);
@@ -83,6 +99,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 // import { ColorPalette } from "@wordpress/components";
 // import { ColorPicker } from "@wordpress/components";
 
@@ -102,13 +119,31 @@ function Edit({
     content,
     tag,
     contentColor,
-    backgroundColor
+    backgroundColor,
+    padding,
+    margin
   } = attributes;
-  console.log(contentColor);
+  // console.log(padding);
+
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("panel Title", "TestBlock"),
     initialOpen: true
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalBoxControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Custom padding", "Test block"),
+    values: padding,
+    onChange: nextValues => setAttributes({
+      padding: nextValues
+    }),
+    allowReset: true
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalBoxControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Custom margin", "Test block"),
+    values: margin,
+    onChange: nextValues => setAttributes({
+      margin: nextValues
+    }),
+    sides: ["top", "bottom"],
+    allowReset: true
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Select Tag", "Test Block"),
     value: tag,
     options: [{
@@ -169,7 +204,9 @@ function Edit({
     allowedFormats: ["core/bold", "core/italic"],
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Add list item...", "testblock"),
     style: {
-      color: contentColor
+      color: contentColor,
+      background: backgroundColor,
+      padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`
     }
   })));
 }
@@ -278,9 +315,11 @@ function save({
   const {
     content,
     tag,
-    contentColor
+    contentColor,
+    backgroundColor,
+    padding
   } = attributes;
-  // console.log(content);
+  console.log(padding);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save({
       className: "block_info_custom_class"
@@ -289,7 +328,9 @@ function save({
     tagName: tag,
     value: content,
     style: {
-      color: contentColor
+      color: contentColor,
+      background: backgroundColor,
+      padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`
     }
   }));
 }

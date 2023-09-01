@@ -28,6 +28,7 @@ import {
 } from "@wordpress/block-editor";
 import { PanelBody } from "@wordpress/components";
 import { SelectControl } from "@wordpress/components";
+import { __experimentalBoxControl as BoxControl } from "@wordpress/components";
 // import { ColorPalette } from "@wordpress/components";
 // import { ColorPicker } from "@wordpress/components";
 
@@ -40,12 +41,36 @@ import { SelectControl } from "@wordpress/components";
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes = {}, setAttributes }) {
-	const { content, tag, contentColor, backgroundColor } = attributes;
-	console.log(contentColor);
+	const { content, tag, contentColor, backgroundColor, padding, margin } =
+		attributes;
+	// console.log(padding);
+
 	return (
 		<Fragment>
 			<InspectorControls>
 				<PanelBody title={__("panel Title", "TestBlock")} initialOpen={true}>
+					<BoxControl
+						label={__("Custom padding", "Test block")}
+						values={padding}
+						onChange={(nextValues) =>
+							setAttributes({
+								padding: nextValues,
+							})
+						}
+						allowReset={true}
+					></BoxControl>
+					<BoxControl
+						label={__("Custom margin", "Test block")}
+						values={margin}
+						onChange={(nextValues) =>
+							setAttributes({
+								margin: nextValues,
+							})
+						}
+						sides={["top", "bottom"]}
+						allowReset={true}
+					></BoxControl>
+
 					<SelectControl
 						label={__("Select Tag", "Test Block")}
 						value={tag}
@@ -128,6 +153,8 @@ export default function Edit({ attributes = {}, setAttributes }) {
 					placeholder={__("Add list item...", "testblock")}
 					style={{
 						color: contentColor,
+						background: backgroundColor,
+						padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`,
 					}}
 				></RichText>
 			</div>

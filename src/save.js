@@ -18,8 +18,9 @@ import { RichText, useBlockProps } from "@wordpress/block-editor";
  */
 export default function save({ attributes }) {
 	// console.log(attributes);
-	const { content, tag, contentColor } = attributes;
-	// console.log(content);
+	const { content, tag, contentColor, backgroundColor, padding } = attributes;
+
+	console.log(padding);
 	return (
 		<div
 			{...useBlockProps.save({
@@ -31,6 +32,8 @@ export default function save({ attributes }) {
 				value={content}
 				style={{
 					color: contentColor,
+					background: backgroundColor,
+					padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`,
 				}}
 			></RichText.Content>
 		</div>

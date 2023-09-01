@@ -22,6 +22,22 @@ const attributes = {
 	backgroundColor: {
 		type: "string",
 	},
+	padding: {
+		type: "object",
+		default: {
+			top: "10px",
+			bottom: "10px",
+			left: "10px",
+			right: "10px",
+		},
+	},
+	margin: {
+		type: "object",
+		default: {
+			top: "10px",
+			bottom: "10px",
+		},
+	},
 };
 
 export default attributes;
