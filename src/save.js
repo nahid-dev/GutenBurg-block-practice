@@ -5,7 +5,7 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 
-import { RichText, useBlockProps } from "@wordpress/block-editor";
+import { InnerBlocks, RichText, useBlockProps } from "@wordpress/block-editor";
 
 /**
  * The save function defines the way in which the different attributes should
@@ -26,9 +26,9 @@ export default function save({ attributes }) {
 		backgroundColor,
 		padding,
 		radius,
-		url,
-		alt,
-		id,
+		gallery,
+		titles,
+		icon,
 	} = attributes;
 
 	// console.log(padding);
@@ -52,7 +52,25 @@ export default function save({ attributes }) {
 					textAlign: textAlign,
 				}}
 			></RichText.Content>
-			{url && <img src={url} alt={alt} />}
+			{gallery && (
+				<div className="gallery_container">
+					{gallery.map((image, index) => {
+						return (
+							<div className="single_gallery_image" key={index}>
+								<img src={image.url} alt={image.alt} />
+							</div>
+						);
+					})}
+				</div>
+			)}
+			{titles &&
+				titles.map((item, index) => {
+					return <li key={index}>{item.title}</li>;
+				})}
+			<InnerBlocks.Content></InnerBlocks.Content>
+			<div className="selected-icon">
+				<span className={`dashicons dashicons-${icon}`}></span>
+			</div>
 		</div>
 	);
 }

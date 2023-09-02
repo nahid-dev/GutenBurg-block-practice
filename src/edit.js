@@ -23,8 +23,11 @@ import { Fragment } from "@wordpress/element";
 import {
 	AlignmentToolbar,
 	BlockControls,
+	InnerBlocks,
 	InspectorControls,
 	MediaPlaceholder,
+	MediaUpload,
+	MediaUploadCheck,
 	PanelColorSettings,
 	RichText,
 	useBlockProps,
@@ -34,6 +37,9 @@ import { SelectControl } from "@wordpress/components";
 import { __experimentalBoxControl as BoxControl } from "@wordpress/components";
 import { RangeControl } from "@wordpress/components";
 import { ToolbarGroup } from "@wordpress/components";
+import { TextControl } from "@wordpress/components";
+import Info from "./components/info/info";
+import IconPicker from "./components/icon-picker";
 // import { ColorPalette } from "@wordpress/components";
 // import { ColorPicker } from "@wordpress/components";
 
@@ -55,11 +61,11 @@ export default function Edit({ attributes = {}, setAttributes }) {
 		margin,
 		textAlign,
 		radius,
-		url,
-		alt,
-		id,
+		gallery,
+		titles,
+		icon,
 	} = attributes;
-	// console.log(padding);
+	// console.log(icon);
 
 	return (
 		<Fragment>
@@ -68,12 +74,28 @@ export default function Edit({ attributes = {}, setAttributes }) {
 					value={textAlign}
 					onChange={(value) => setAttributes({ textAlign: value })}
 				></AlignmentToolbar>
-				{url && (
+				{gallery && (
 					<ToolbarGroup>
 						<ToolbarButton
-							onClick={() => setAttributes({ url: "", id: "", alt: "" })}
+							onClick={() => setAttributes({ gallery: "" })}
 							icon="trash"
-						></ToolbarButton>
+						/>
+						<MediaUploadCheck>
+							<MediaUpload
+								multiple={true}
+								gallery={true}
+								onSelect={(media) =>
+									setAttributes({
+										gallery: media,
+									})
+								}
+								allowedTypes={["image"]}
+								value={gallery.map((image) => image.id)}
+								render={({ open }) => {
+									<ToolbarButton onClick={open} icon="edit"></ToolbarButton>;
+								}}
+							></MediaUpload>
+						</MediaUploadCheck>
 					</ToolbarGroup>
 				)}
 			</BlockControls>
@@ -155,6 +177,42 @@ export default function Edit({ attributes = {}, setAttributes }) {
 						enableAlpha={true}
 					></ColorPicker> */}
 				</PanelBody>
+				<PanelBody title={__("Content", "test Block")}>
+					<Info icon="admin-generic" title="Our Repeatable Title">
+						{" "}
+					</Info>
+					<button
+						onClick={() =>
+							setAttributes({
+								titles: [
+									...titles,
+									{
+										id: titles.length + 1,
+										title: "Default text",
+									},
+								],
+							})
+						}
+					>
+						Add New
+					</button>
+					{titles &&
+						titles.map((item, index) => {
+							return (
+								<div key={index}>
+									<TextControl
+										label="Add Title"
+										value={item.title}
+										onChange={(value) => {
+											const newTitles = [...titles];
+											newTitles[index].title = value;
+											setAttributes({ titles: newTitles });
+										}}
+									></TextControl>
+								</div>
+							);
+						})}
+				</PanelBody>
 				<PanelColorSettings
 					title={__("Color Settings", "Test Block")}
 					initialOpen={false}
@@ -179,6 +237,13 @@ export default function Edit({ attributes = {}, setAttributes }) {
 						},
 					]}
 				></PanelColorSettings>
+				<PanelBody title="Settings">
+					<IconPicker
+						attrName="icon"
+						attrValue={icon}
+						setAttributes={setAttributes}
+					></IconPicker>
+				</PanelBody>
 			</InspectorControls>
 
 			<div
@@ -203,28 +268,40 @@ export default function Edit({ attributes = {}, setAttributes }) {
 						textAlign: textAlign,
 					}}
 				></RichText>
-				{url ? (
-					<img
-						style={{
-							width: "100%",
-						}}
-						src={url}
-						alt={alt}
-					/>
+				{gallery ? (
+					<div className="gallery_container">
+						{gallery.map((image, index) => {
+							return (
+								<div className="single_gallery_image" key={index}>
+									<img src={image.url} alt={image.alt} />
+								</div>
+							);
+						})}
+					</div>
 				) : (
 					<MediaPlaceholder
 						onSelect={(media) =>
 							setAttributes({
-								id: media.id,
-								url: media.url,
-								alt: media.alt || "Our Banner",
+								gallery: media,
 							})
 						}
 						allowedTypes={["image"]}
-						multiple={false}
-						labels={["Add your banner"]}
+						multiple={true}
+						labels={{ title: "Add Images" }}
 					></MediaPlaceholder>
 				)}
+				<InnerBlocks
+					allowedBlocks={["core/image", "core/heading"]}
+					renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
+				></InnerBlocks>
+				{titles &&
+					titles.map((item, index) => {
+						return <li key={index}>{item.title}</li>;
+					})}
+				<h4>Selected Icon</h4>
+				<div className="selected-icon">
+					<span className={`dashicons dashicons-${icon}`}></span>
+				</div>
 			</div>
 		</Fragment>
 	);

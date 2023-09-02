@@ -46,14 +46,16 @@ const attributes = {
 		type: "number",
 		default: 0,
 	},
-	url: {
-		type: "string",
+	gallery: {
+		type: "array",
 	},
-	alt: {
-		type: "string",
+	titles: {
+		type: "array",
+		default: [],
 	},
-	id: {
-		type: "number",
+	icon: {
+		type: "string",
+		default: "wordpress",
 	},
 };
 
