@@ -18,24 +18,41 @@ import { RichText, useBlockProps } from "@wordpress/block-editor";
  */
 export default function save({ attributes }) {
 	// console.log(attributes);
-	const { content, tag, contentColor, backgroundColor, padding } = attributes;
+	const {
+		content,
+		tag,
+		textAlign,
+		contentColor,
+		backgroundColor,
+		padding,
+		radius,
+		url,
+		alt,
+		id,
+	} = attributes;
 
-	console.log(padding);
+	// console.log(padding);
 	return (
 		<div
 			{...useBlockProps.save({
 				className: "block_info_custom_class",
 			})}
+			style={{
+				padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`,
+				background: backgroundColor,
+				borderRadius: `${radius}px`,
+			}}
 		>
 			<RichText.Content
 				tagName={tag}
 				value={content}
 				style={{
 					color: contentColor,
-					background: backgroundColor,
-					padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`,
+
+					textAlign: textAlign,
 				}}
 			></RichText.Content>
+			{url && <img src={url} alt={alt} />}
 		</div>
 	);
 }

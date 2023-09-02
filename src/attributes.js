@@ -38,6 +38,23 @@ const attributes = {
 			bottom: "10px",
 		},
 	},
+	textAlign: {
+		type: "string",
+		default: "left",
+	},
+	radius: {
+		type: "number",
+		default: 0,
+	},
+	url: {
+		type: "string",
+	},
+	alt: {
+		type: "string",
+	},
+	id: {
+		type: "number",
+	},
 };
 
 export default attributes;

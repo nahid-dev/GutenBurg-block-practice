@@ -21,14 +21,19 @@ import { __ } from "@wordpress/i18n";
 import "./editor.scss";
 import { Fragment } from "@wordpress/element";
 import {
+	AlignmentToolbar,
+	BlockControls,
 	InspectorControls,
+	MediaPlaceholder,
 	PanelColorSettings,
 	RichText,
 	useBlockProps,
 } from "@wordpress/block-editor";
-import { PanelBody } from "@wordpress/components";
+import { PanelBody, ToolbarButton } from "@wordpress/components";
 import { SelectControl } from "@wordpress/components";
 import { __experimentalBoxControl as BoxControl } from "@wordpress/components";
+import { RangeControl } from "@wordpress/components";
+import { ToolbarGroup } from "@wordpress/components";
 // import { ColorPalette } from "@wordpress/components";
 // import { ColorPicker } from "@wordpress/components";
 
@@ -41,12 +46,37 @@ import { __experimentalBoxControl as BoxControl } from "@wordpress/components";
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes = {}, setAttributes }) {
-	const { content, tag, contentColor, backgroundColor, padding, margin } =
-		attributes;
+	const {
+		content,
+		tag,
+		contentColor,
+		backgroundColor,
+		padding,
+		margin,
+		textAlign,
+		radius,
+		url,
+		alt,
+		id,
+	} = attributes;
 	// console.log(padding);
 
 	return (
 		<Fragment>
+			<BlockControls>
+				<AlignmentToolbar
+					value={textAlign}
+					onChange={(value) => setAttributes({ textAlign: value })}
+				></AlignmentToolbar>
+				{url && (
+					<ToolbarGroup>
+						<ToolbarButton
+							onClick={() => setAttributes({ url: "", id: "", alt: "" })}
+							icon="trash"
+						></ToolbarButton>
+					</ToolbarGroup>
+				)}
+			</BlockControls>
 			<InspectorControls>
 				<PanelBody title={__("panel Title", "TestBlock")} initialOpen={true}>
 					<BoxControl
@@ -70,6 +100,17 @@ export default function Edit({ attributes = {}, setAttributes }) {
 						sides={["top", "bottom"]}
 						allowReset={true}
 					></BoxControl>
+					<RangeControl
+						label={__("Border radius", "Test block")}
+						value={radius}
+						onChange={(value) =>
+							setAttributes({
+								radius: value,
+							})
+						}
+						min={0}
+						max={100}
+					></RangeControl>
 
 					<SelectControl
 						label={__("Select Tag", "Test Block")}
@@ -144,6 +185,11 @@ export default function Edit({ attributes = {}, setAttributes }) {
 				{...useBlockProps({
 					className: "block_info_custom_class",
 				})}
+				style={{
+					borderRadius: `${radius}px`,
+					background: backgroundColor,
+					padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`,
+				}}
 			>
 				<RichText
 					tagName={tag}
@@ -153,10 +199,32 @@ export default function Edit({ attributes = {}, setAttributes }) {
 					placeholder={__("Add list item...", "testblock")}
 					style={{
 						color: contentColor,
-						background: backgroundColor,
-						padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`,
+
+						textAlign: textAlign,
 					}}
 				></RichText>
+				{url ? (
+					<img
+						style={{
+							width: "100%",
+						}}
+						src={url}
+						alt={alt}
+					/>
+				) : (
+					<MediaPlaceholder
+						onSelect={(media) =>
+							setAttributes({
+								id: media.id,
+								url: media.url,
+								alt: media.alt || "Our Banner",
+							})
+						}
+						allowedTypes={["image"]}
+						multiple={false}
+						labels={["Add your banner"]}
+					></MediaPlaceholder>
+				)}
 			</div>
 		</Fragment>
 	);

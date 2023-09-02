@@ -48,6 +48,23 @@ const attributes = {
       top: "10px",
       bottom: "10px"
     }
+  },
+  textAlign: {
+    type: "string",
+    default: "left"
+  },
+  radius: {
+    type: "number",
+    default: 0
+  },
+  url: {
+    type: "string"
+  },
+  alt: {
+    type: "string"
+  },
+  id: {
+    type: "number"
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (attributes);
@@ -100,6 +117,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 // import { ColorPalette } from "@wordpress/components";
 // import { ColorPicker } from "@wordpress/components";
 
@@ -121,11 +140,28 @@ function Edit({
     contentColor,
     backgroundColor,
     padding,
-    margin
+    margin,
+    textAlign,
+    radius,
+    url,
+    alt,
+    id
   } = attributes;
   // console.log(padding);
 
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.AlignmentToolbar, {
+    value: textAlign,
+    onChange: value => setAttributes({
+      textAlign: value
+    })
+  }), url && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToolbarGroup, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToolbarButton, {
+    onClick: () => setAttributes({
+      url: "",
+      id: "",
+      alt: ""
+    }),
+    icon: "trash"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("panel Title", "TestBlock"),
     initialOpen: true
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalBoxControl, {
@@ -143,6 +179,14 @@ function Edit({
     }),
     sides: ["top", "bottom"],
     allowReset: true
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.RangeControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Border radius", "Test block"),
+    value: radius,
+    onChange: value => setAttributes({
+      radius: value
+    }),
+    min: 0,
+    max: 100
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Select Tag", "Test Block"),
     value: tag,
@@ -194,7 +238,12 @@ function Edit({
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({
       className: "block_info_custom_class"
-    })
+    }),
+    style: {
+      borderRadius: `${radius}px`,
+      background: backgroundColor,
+      padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`
+    }
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
     tagName: tag,
     value: content,
@@ -205,9 +254,23 @@ function Edit({
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Add list item...", "testblock"),
     style: {
       color: contentColor,
-      background: backgroundColor,
-      padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`
+      textAlign: textAlign
     }
+  }), url ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    style: {
+      width: "100%"
+    },
+    src: url,
+    alt: alt
+  }) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaPlaceholder, {
+    onSelect: media => setAttributes({
+      id: media.id,
+      url: media.url,
+      alt: media.alt || "Our Banner"
+    }),
+    allowedTypes: ["image"],
+    multiple: false,
+    labels: ["Add your banner"]
   })));
 }
 
@@ -315,23 +378,36 @@ function save({
   const {
     content,
     tag,
+    textAlign,
     contentColor,
     backgroundColor,
-    padding
+    padding,
+    radius,
+    url,
+    alt,
+    id
   } = attributes;
-  console.log(padding);
+
+  // console.log(padding);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save({
       className: "block_info_custom_class"
-    })
+    }),
+    style: {
+      padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`,
+      background: backgroundColor,
+      borderRadius: `${radius}px`
+    }
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText.Content, {
     tagName: tag,
     value: content,
     style: {
       color: contentColor,
-      background: backgroundColor,
-      padding: `${padding.top} ${padding.right} ${padding.bottom} ${padding.left}`
+      textAlign: textAlign
     }
+  }), url && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: url,
+    alt: alt
   }));
 }
 
